@@ -243,106 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroSlider();
 
   /* =========================================================================
-     5. TOUR CATEGORIES OWL CAROUSEL
-     ========================================================================= */
-  const categoriesCarousel = document.getElementById('categoriesCarousel');
-  const categoriesDotsContainer = document.getElementById('categoriesDots');
-  const categoriesPrevBtn = document.getElementById('categoriesPrev');
-  const categoriesNextBtn = document.getElementById('categoriesNext');
-
-  if (categoriesCarousel) {
-    const cards = Array.from(categoriesCarousel.querySelectorAll('.owl-item-card'));
-    const totalCards = cards.length;
-    let activeIndex = 2;
-
-    if (categoriesDotsContainer && totalCards > 0) {
-      categoriesDotsContainer.innerHTML = '';
-      cards.forEach((_, idx) => {
-        const dot = document.createElement('button');
-        dot.className = `owl-dot-btn ${idx === activeIndex ? 'active' : ''}`;
-        dot.setAttribute('aria-label', `Go to slide ${idx + 1}`);
-        dot.addEventListener('click', () => setActiveSlide(idx));
-        categoriesDotsContainer.appendChild(dot);
-      });
-    }
-
-    function updateDots(idx) {
-      if (!categoriesDotsContainer) return;
-      const dots = categoriesDotsContainer.querySelectorAll('.owl-dot-btn');
-      dots.forEach((dot, dIdx) => {
-        dot.classList.toggle('active', dIdx === idx);
-      });
-    }
-
-    function setActiveSlide(idx) {
-      activeIndex = (idx + totalCards) % totalCards;
-      
-      cards.forEach((card, cardIdx) => {
-        const diff = getCircularDiff(cardIdx, activeIndex, totalCards);
-
-        if (diff === -2) {
-          card.setAttribute('data-arc', 'left-2');
-        } else if (diff === -1) {
-          card.setAttribute('data-arc', 'left-1');
-        } else if (diff === 0) {
-          card.setAttribute('data-arc', 'center');
-        } else if (diff === 1) {
-          card.setAttribute('data-arc', 'right-1');
-        } else if (diff === 2) {
-          card.setAttribute('data-arc', 'right-2');
-        } else if (diff < -2) {
-          card.setAttribute('data-arc', 'left-2');
-        } else {
-          card.setAttribute('data-arc', 'right-2');
-        }
-      });
-
-      updateDots(activeIndex);
-    }
-
-    if (categoriesPrevBtn) {
-      categoriesPrevBtn.addEventListener('click', () => {
-        setActiveSlide(activeIndex - 1);
-      });
-    }
-
-    if (categoriesNextBtn) {
-      categoriesNextBtn.addEventListener('click', () => {
-        setActiveSlide(activeIndex + 1);
-      });
-    }
-
-    cards.forEach((card, idx) => {
-      card.addEventListener('click', () => {
-        setActiveSlide(idx);
-      });
-    });
-
-    let startX = 0;
-    let isDragging = false;
-
-    categoriesCarousel.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      isDragging = true;
-    }, { passive: true });
-
-    categoriesCarousel.addEventListener('touchend', (e) => {
-      if (!isDragging) return;
-      isDragging = false;
-      const endX = e.changedTouches[0].clientX;
-      const diffX = startX - endX;
-
-      if (diffX > 40) {
-        setActiveSlide(activeIndex + 1);
-      } else if (diffX < -40) {
-        setActiveSlide(activeIndex - 1);
-      }
-    }, { passive: true });
-
-    setActiveSlide(activeIndex);
-  }
-
-  /* =========================================================================
      6. TOP DESTINATION 3D COVERFLOW OWL CAROUSEL
      ========================================================================= */
   const destinationsCarousel = document.getElementById('destinationsCarousel');
@@ -454,21 +354,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* =========================================================================
-     8. TOUR GUIDE SELECTION TOGGLE
-     ========================================================================= */
-  const guideCardBoxes = document.querySelectorAll('.guide-card-box');
-  guideCardBoxes.forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.social-dot')) return;
-      const inner = card.querySelector('.guide-info-inner');
-      if (!inner) return;
-      const wasActive = inner.classList.contains('active-guide');
-      document.querySelectorAll('.guide-info-inner').forEach(el => el.classList.remove('active-guide'));
-      if (!wasActive) {
-        inner.classList.add('active-guide');
-      }
-    });
-  });
 
 });
