@@ -201,7 +201,7 @@ button {
    -------------------------------------------------------------------------- */
 .home-page .hero-section {
   position: relative;
-  min-height: 85vh;
+  min-height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
